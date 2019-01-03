@@ -1,0 +1,32 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param A : list of linked list
+    # @return the head node in the linked list
+    def mergeKLists(self, A):
+        import heapq
+
+        result = None
+        result_root = None
+        l = []
+        for i in range(len(A)):
+            heapq.heappush(l, (A[i].val, i))
+            A[i] = A[i].next
+
+        while len(l):
+            element, index = heapq.heappop(l)
+            if not result:
+                result = ListNode(element)
+                result_root = result
+            else:
+                result.next = ListNode(element)
+                result = result.next
+            if A[index] is not None:
+                heapq.heappush(l, (A[index].val, index))
+                A[index] = A[index].next
+
+        return result_root
